@@ -8,6 +8,8 @@
 
 void setup() {
    Serial.begin(115200);
+   delay(4000); // not always needed. Some boards need a delay to allow Serial to be ready
+
    pinMode(LED_PIN, OUTPUT);
    digitalWrite(LED_PIN, LOW);
 
