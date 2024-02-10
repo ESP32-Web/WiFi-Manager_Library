@@ -1,9 +1,0 @@
-Quickest way to get started with this library is via this short video tutorial:
-
-https://youtu.be/lcbPMxtgacM
-
-
-As per the video above, in "platformio.ini" file add the following lines:
-
-monitor_speed = 115200
-extra_scripts = ./littlefsbuilder.py

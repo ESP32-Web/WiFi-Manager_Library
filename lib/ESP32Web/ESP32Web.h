@@ -18,8 +18,6 @@
 
 // <========================> Gloabal Varibales Declared <============================> //
 
-extern const char* licenceKey;
-
 extern const char* title_type;
 extern const char* main_title;
 extern const char* sub_title;
@@ -66,6 +64,9 @@ enum State {
    AP_Mode,     // 10
    STA_Mode,    // 11
 };
+
+// Flags
+extern bool wifiScanActive;
 
 extern State currentState;
 

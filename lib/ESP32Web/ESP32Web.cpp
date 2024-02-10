@@ -3,9 +3,6 @@
 
 // <========================> User Configuration Varaibles <============================> //
 
-// Licence Key
-const char* licenceKey = "this is where the licence key goes";
-
 // Website Data
 const char* title_type = "text-image"; // "text-only" or "text-image"
 const char* main_title = "ESP32 Web";
@@ -13,14 +10,13 @@ const char* sub_title = "WiFi Manager";
 const char* footer_tag = "Powered by ESP32 Web";
 
 // WiFi HotSpot Details
-const char* ap_ssid = "ESP32 Web";
-const char* ap_password = "esp32web";
-// how long WiFi Hotspot stays open for
+const char* ap_ssid = "ESP32 Web"; // Hotspot WiFi Name
+const char* ap_password = "esp32web"; // Hotspot WiFi Password
+// How long WiFi Hotspot stays open for 
+// -- Hotspot is energy consuming & chip can get hot
 unsigned long apDuration = 200000; // 3 mins = 180000, 2 mins = 120000, 1 min = 60000
 
 // Local Website URL
-// --- If you change this local_url, you must also change the "local_url_name" in the "data/config.json" file. 
-// --- Both varibales must be the same. These are not case sensitive.
 const char* local_URL = "esp32web"; //  accesible on "ESP32Web.local"
 
 // ============================ Other Varaibles ============================ //
@@ -33,7 +29,7 @@ String ssid_connected;
 
 
 // For WiFi Scan function
-int wifiNum;                // number of networks
+int wifiNum = -1;                // number of networks
 String wifi_array[20] = {}; // all netwrks in object
 
 unsigned long previousMillis = 0;
@@ -60,6 +56,8 @@ SimpleTimer t0_AP_Mode;
 SimpleTimer t1_stopAP;
 SimpleTimer t2;
 
+// Flags
+bool wifiScanActive = false;
 
 //State
 State currentState = Initiating;
@@ -69,6 +67,10 @@ State currentState = Initiating;
 
 // Code for each state;
 void handleState() {
+
+   if (wifiScanActive) {
+      wifiScan();
+   }
 
    if (currentState == Idle) {}
 
@@ -122,29 +124,55 @@ void wifiScan() {
 
    // WiFi.scanNetworks will return the number of networks found
    int n = WiFi.scanNetworks();
-
-   // limit to 20 networks (max 20 networks)
-   (n > 20) ? n = 20 : n = n;
-
    wifiNum = n;
 
-   if (n == 0) Serial.println("no networks found");
+   // unique SSID count
+   int uniqueCount = 0;
 
+   // n is the number of networks found
+   if (n == 0) Serial.println("no networks found");
    else {
 
-      Serial.print(n);
-      Serial.println(" networks found");
+      Serial.print(n); Serial.println(" networks found");
 
       for (int i = 0; i < n; i++) {
-         wifi_array[i] = WiFi.SSID(i);
-         // Serial.println(WiFi.SSID(i));
+
+         // assume the SSID is unique to begin with
+         bool isUnique = true;
+
+         // Check if the SSID is already in the wifi_array
+         for (int j = 0; j < uniqueCount; j++) {
+            if (WiFi.SSID(i) == wifi_array[j]) {
+               isUnique = false;
+               break;
+            }
+         }
+
+         // If the SSID is unique, add it to wifi_array and print
+         if (isUnique) {
+            wifi_array[uniqueCount++] = WiFi.SSID(i);
+            Serial.println(WiFi.SSID(i));
+         }
+
+         // Limit the unique SSIDs to a maximum number to avoid overflow
+         if (uniqueCount >= 20) {
+            break;
+         }
+
+
       }
+
+      Serial.print("Unique SSIDs Count:"); Serial.println(uniqueCount);
+
+      // Update the global variable to the unique count
+      wifiNum = uniqueCount;
 
    }
 
-
-
    Serial.println("Scan Complete");
+
+   // Set the flag to false
+   wifiScanActive = false;
 
 }
 
@@ -180,8 +208,8 @@ void handlePostRequest(AsyncWebServerRequest* request, uint8_t* data, size_t len
    const char* requestType = jsonDocument["request"];          // can get value for each key in jsondocument
 
    // Do something with the values
-   Serial.print("request: ");
-   Serial.println(requestType);
+   // Serial.print("request: ");
+   // Serial.println(requestType);
 
    if (String(requestType) == "get-user-data") {
 
@@ -203,6 +231,7 @@ void handlePostRequest(AsyncWebServerRequest* request, uint8_t* data, size_t len
       // json object (responseJson) is then serialised in a json formatted string (jsonResponse)
       serializeJson(responseJson, jsonResponse);
       request->send(200, "application/json", jsonResponse);
+      return;
    }
 
 
@@ -221,39 +250,62 @@ void handlePostRequest(AsyncWebServerRequest* request, uint8_t* data, size_t len
       // json object (responseJson) is then serialised in a json formatted string (jsonResponse)
       serializeJson(responseJson, jsonResponse);
       request->send(200, "application/json", jsonResponse);
+      return;
    }
 
 
    if (String(requestType) == "wifi-scan") {
 
-      // run wifi scan
-      wifiScan();
+      Serial.print("wifiNum: "); Serial.println(wifiNum);
+      Serial.print("wifiScanActive: "); Serial.println(wifiScanActive);
 
-      // Send a custom json message back
-      DynamicJsonDocument responseJson(256);
+      // If newtworks found are 0, then start a new scan
+      if (wifiNum == -1 || wifiScanActive == true) {
+         // Activate flag to start a new scan
+         wifiScanActive = true;
 
-      responseJson["wifiNum"] = String(wifiNum); // 1st key-value pair
+         // Acknowledge the request
+         request->send(200, "text/plain", "Request received, processing...");
+         Serial.println("scan request acknowledged");
+         Serial.print("\n");
+         return;
 
-      Serial.print("wifiNum:");
-      Serial.println(wifiNum);
+      }
+      // Scan data is available
+      if (wifiNum != -1 && wifiScanActive == false) {
 
-      for (int i = 0; i < wifiNum; i++) {
+         // Send a custom json message back
+         DynamicJsonDocument responseJson(256);
 
-         String key = String(i);
-         responseJson[key] = wifi_array[i];   // the rest key-value pairs
-         Serial.println(wifi_array[i]);
+         responseJson["wifiNum"] = String(wifiNum); // 1st key-value pair
+
+         Serial.print("wifiNum:");
+         Serial.println(wifiNum);
+
+         for (int i = 0; i < wifiNum; i++) {
+
+            String key = String(i);
+            responseJson[key] = wifi_array[i];   // the rest key-value pairs
+            Serial.println(wifi_array[i]);
+         }
+
+         Serial.println("scan data prepared");
+
+         // String variable created
+         String jsonResponse;
+         // json object (responseJson) is then serialised in a json formatted string (jsonResponse)
+         serializeJson(responseJson, jsonResponse);
+         request->send(200, "application/json", jsonResponse);
+
+         Serial.println("scan data sent");
+
+         // Reset the wifiNum to -1
+         wifiNum = -1;
+         return;
+
+
       }
 
-      Serial.println("scan data prepared");
-
-      // String variable created
-      String jsonResponse;
-      // json object (responseJson) is then serialised in a json formatted string (jsonResponse)
-      serializeJson(responseJson, jsonResponse);
-      request->send(200, "application/json", jsonResponse);
-
-
-      Serial.println("scan data sent");
 
    }
 
@@ -302,6 +354,7 @@ void handlePostRequest(AsyncWebServerRequest* request, uint8_t* data, size_t len
       // Reply back to the website
 
       request->send(200, "text/plain", "WiFi Setup Data Recieved & Configured");
+      delay(1000);
 
       // ----------
 
@@ -316,19 +369,16 @@ void handlePostRequest(AsyncWebServerRequest* request, uint8_t* data, size_t len
       Serial.println(mode);
 
       // Reply back to the website
-      DynamicJsonDocument responseJson(256);
-
-      Serial.print("licence Key:");
-      Serial.println(licenceKey);
+      DynamicJsonDocument responseJson(150);
 
       responseJson["mode"] = mode; // 1st key-value pair
-      responseJson["licenceKey"] = licenceKey; // 2nd key-value pair
 
       // String variable created
       String jsonResponse;
       // json object (responseJson) is then serialised in a json formatted string (jsonResponse)
       serializeJson(responseJson, jsonResponse);
       request->send(200, "application/json", jsonResponse);
+      return;
 
    }
 
@@ -336,7 +386,7 @@ void handlePostRequest(AsyncWebServerRequest* request, uint8_t* data, size_t len
    if (String(requestType) == "get-ap-timer") {
 
       // Reply back to the website
-      DynamicJsonDocument responseJson(256);
+      DynamicJsonDocument responseJson(150);
 
       responseJson["timer"] = apTimerRemaining - 20; // 1st key-value pair
 
@@ -347,6 +397,7 @@ void handlePostRequest(AsyncWebServerRequest* request, uint8_t* data, size_t len
       Serial.print("timer json response:");
       Serial.println(jsonResponse);
       request->send(200, "application/json", jsonResponse);
+      return;
 
    }
 
@@ -401,6 +452,7 @@ void handlePostRequest(AsyncWebServerRequest* request, uint8_t* data, size_t len
 
       // Reply back to the website
       request->send(200, "text/plain", "connection-good");
+      return;
    }
 }
 

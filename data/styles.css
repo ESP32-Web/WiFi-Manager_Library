@@ -233,11 +233,11 @@ body {
 /* Theme Button */
 .theme-button {
    background: #e2e2e2 !important;
-   color: #494949;
+   color: #494949 !important;
 }
 .dark .theme-button {
    background: #292929 !important;
-   color: #a1a1a1;
+   color: #a1a1a1 !important;
 }
 
 
