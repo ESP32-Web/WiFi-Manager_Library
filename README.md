@@ -17,3 +17,6 @@ extra_scripts = ./littlefsbuilder.py
 ```
 
 https://esp32web.com/
+
+[Docs](https://esp32web.com/docs) -
+[Changelog](https://esp32web.com/changelog)
