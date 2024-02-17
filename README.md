@@ -20,3 +20,8 @@ https://esp32web.com/
 
 [Docs](https://esp32web.com/docs) -
 [Changelog](https://esp32web.com/changelog)
+
+
+<a href="https://www.buymeacoffee.com/farazkhan" target="_blank">
+    <img src="./github/BuyMeACoffee_Button.png" width="180">
+</a>
