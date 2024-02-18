@@ -15,6 +15,7 @@
 #include "ArduinoJson.h"
 #include <LittleFS_extra.h>
 #include <SimpleTimer.h>
+#include <DNSServer.h>
 
 // <========================> Gloabal Varibales Declared <============================> //
 
@@ -67,6 +68,7 @@ enum State {
 
 // Flags
 extern bool wifiScanActive;
+extern bool captiveWebPortal;
 
 extern State currentState;
 

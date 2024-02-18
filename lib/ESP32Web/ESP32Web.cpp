@@ -15,6 +15,7 @@ const char* ap_password = "esp32web"; // Hotspot WiFi Password
 // How long WiFi Hotspot stays open for 
 // -- Hotspot is energy consuming & chip can get hot
 unsigned long apDuration = 200000; // 3 mins = 180000, 2 mins = 120000, 1 min = 60000
+bool captiveWebPortal = true; // Would you like to show a captive portal to the user? (true or false)
 
 // Local Website URL
 const char* local_URL = "esp32web"; //  accesible on "ESP32Web.local"
@@ -44,6 +45,7 @@ unsigned long apStartTime;
 unsigned long apTimerRemaining;
 
 AsyncWebServer server(80);
+DNSServer dnsServer; // DNS server for captive portal
 
 // Data recieved from website
 String receivedData;  // Variable to store the received data
@@ -82,6 +84,7 @@ void handleState() {
 
    if (currentState == AP_Mode) {
       t0_AP_Mode.run();
+      if (captiveWebPortal) dnsServer.processNextRequest();
    }
 
 
@@ -578,6 +581,36 @@ void stopAP() {
 }
 
 
+// CaptiveRequestHandler Class
+class CaptiveRequestHandler : public AsyncWebHandler {
+public:
+   CaptiveRequestHandler() {}
+   virtual ~CaptiveRequestHandler() {}
+
+   bool canHandle(AsyncWebServerRequest* request) {
+      return true; // Handle all requests
+   }
+
+   void handleRequest(AsyncWebServerRequest* request) {
+      // Your captive portal page content
+      // request->send(LittleFS, "index.html", String(), false);
+      Serial.print("CaptiveRequestHandler: ");
+      Serial.println(request->url());
+      request->redirect(String("http://") + local_URL + ".local/");
+      // request->send(LittleFS, "/index.html", "text/html");
+
+
+      // AsyncResponseStream* response = request->beginResponseStream("text/html");
+      // response->print("<!DOCTYPE html><html><head><title>Captive Portal</title></head><body>");
+      // response->print("<p>This is out captive portal front page.</p>");
+      // response->printf("<p>You were trying to reach: http://%s%s</p>", request->host().c_str(), request->url().c_str());
+      // response->printf("<p>Try opening <a href='http://%s'>this link</a> instead</p>", WiFi.softAPIP().toString().c_str());
+      // response->printf("<p>Try %s opening instead</p>", WiFi.softAPIP().toString().c_str());
+      // response->print("</body></html>");
+      // request->send(response);
+   }
+};
+
 
 // Starts up the React website
 void startWebserver() {
@@ -614,20 +647,11 @@ void startWebserver() {
 
 
 
-   // Start the server
-   server.begin();
-
-   // Configure the server to handle the data request
-   server.on(
-      "/endpoint", HTTP_POST,
-      [](AsyncWebServerRequest* request) {
-         // Handle the POST request by calling the separate function
-         // handlePostRequest(request, NULL, 0, 0, 0);
-      },
-      NULL,
-      handlePostRequest
-      );
-
+   // Captive Portal
+   if (captiveWebPortal) {
+      dnsServer.start(53, "*", WiFi.softAPIP());
+      server.addHandler(new CaptiveRequestHandler()).setFilter(ON_AP_FILTER);//only when requested from AP
+   }
 
 
    // Start the server

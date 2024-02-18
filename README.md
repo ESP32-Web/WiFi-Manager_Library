@@ -1,5 +1,5 @@
 ### ESP32 Web
-# WiFi Manager Library - v 0.1.1
+# WiFi Manager Library - v 0.1.2
 
 <img src="./github/Repository-Banner.png">
 
