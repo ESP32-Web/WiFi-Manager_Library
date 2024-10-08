@@ -1,379 +1,166 @@
-/* 
-Ghost Code v1.1.0
--------------------
-You can use this file to really make your website look great!
-*/
-
-/* #region ==== Global ==== */
-
-/* Body */
-body {
-   background: #fafafa !important;
+.esp32web_background {
+   background-color: rgb(255, 255, 255) !important;
 }
-.dark body {
-   background: #1E1E1E !important;
+.dark-app .esp32web_background {
+   background-color: rgb(24, 24, 27) !important;
 }
-
-
-/* #endregion ----------------- */
-
-
-
-
-/* #endregion ----------------- */
-
-
-
-/* #region ==== Home Page ==== */
-
-/* Logo */
-.logo {
-   width: 100px;
-   /* margin-right: 20px; */
-   /* margin-top: 10px; */
+.esp32web_connection {
+   background-color: rgb(226, 226, 226) !important;
+   color: rgb(70, 70, 70) !important;
 }
-/* ------------------------- */
-
-
-/* Logo-Title Border */
-.title-div {
-   text-align: left;
-   margin-left: 20px;
-   margin-top: -10px;
+.dark-app .esp32web_connection {
+   background-color: rgb(41, 41, 41) !important;
+   color: rgb(255, 255, 255) !important;
 }
-
-/* Main Title */
-.main-title {
-   color: #4b4b4b;
-   font-family: Brother, Arial Rounded MT Bold, sans-serif;
-   font-size: 50px;
-   -webkit-text-stroke: 0px #fb865f;
+.esp32web_username {
+   background: rgb(226, 226, 226) !important;
+   color: rgb(93, 93, 93) !important;
 }
-.dark .main-title {
-   color: #ffffff;
-   -webkit-text-stroke: 0px #fb865f;
+.dark-app .esp32web_username {
+   background: rgb(41, 41, 41) !important;
+   color: rgb(138, 138, 138) !important;
 }
-/* ------------------------- */
-
-
-
-/* Sub Title */
-.sub-title {
-   color: #4b4b4b;
-   font-family: Arial Rounded MT Bold, sans-serif;
-   font-size: 20px;
-   border-top: 2px solid #4b4b4b;
-   margin-top: -5px;
-   padding-top: 0px;
+.esp32web_username-hover:hover {
+   background: rgb(195, 195, 195) !important;
+   color: rgb(71, 71, 71) !important;
 }
-.dark .sub-title {
-   color: #b6b6b6;
-   border-color: #b6b6b6;
+.dark-app .esp32web_username-hover:hover {
+   background: rgb(56, 56, 56) !important;
+   color: rgb(214, 214, 214) !important;
 }
-/* ------------------------- */
-
-
-
-/* Connection Bar - for Station Mode*/
-.connection-bar {
-   background: #e2e2e2;
-   color: #464646;
+.esp32web_password {
+   background: rgb(226, 226, 226) !important;
+   color: rgb(93, 93, 93) !important;
 }
-.dark .connection-bar {
-   background: #292929;
-   color: #ffffff;
+.dark-app .esp32web_password {
+   background: rgb(41, 41, 41) !important;
+   color: rgb(138, 138, 138) !important;
 }
-/* ------------------------- */
-
-
-
-
-/* WiFi Scan Button */
-.wifi-scan-btn {
-   background: #999999 !important;
-   color: #f5f5f5 !important;
+.esp32web_password-input::placeholder {
+   color: rgb(93, 93, 93) !important;
 }
-.dark .wifi-scan-btn {
-   background: #373737 !important;
-   color: #cfcfcf !important;
+.dark-app .esp32web_password-input::placeholder {
+   color: rgb(138, 138, 138) !important;
 }
-
-/* hover */
-.wifi-scan-btn:hover {
-   filter: brightness(1.1);
+.esp32web_scanBtn {
+   background-color: rgb(153, 153, 153) !important;
+   color: rgb(245, 245, 245) !important;
 }
-.dark.wifi-scan-btn:hover {
-   filter: brightness(1.1);
+.dark-app .esp32web_scanBtn {
+   background-color: rgb(55, 55, 55) !important;
+   color: rgb(207, 207, 207) !important;
 }
-/* ------------------------- */
-
-
-/* WiFi Select Dropdown */
-.wifi-select {
-   background: #e2e2e2 !important;
-   color: #5d5d5d;
+.esp32web_show-password-btn {
+   background-color: rgb(148, 148, 148) !important;
+   color: rgb(255, 255, 255) !important;
 }
-.dark .wifi-select {
-   background: #292929 !important;
-   color: #8a8a8a;
+.dark-app .esp32web_show-password-btn {
+   background-color: rgb(65, 65, 65) !important;
+   color: rgb(175, 175, 175) !important;
 }
-
-/* hover */
-.wifi-select:hover {
-   filter: brightness(0.95);
-   cursor: pointer;
-}
-.dark .wifi-select:hover {
-   filter: brightness(1.3);
-   cursor: pointer;
-}
-
-/* options */
-.wifi-select option {
-   background-color: #c9c9c9 !important;
-   color: #5d5d5d !important;
-}
-.dark .wifi-select option {
-   background-color: #292929 !important;
-   color: #8a8a8a !important;
-}
-
-/* arrow icon */
-.chakra-select__icon {
-   color: #5d5d5d !important;
-}
-.dark .chakra-select__icon {
-   color: #afafaf !important;
-}
-/* ------------------------- */
-
-
-
-/* Password Field */
-.password-input {
-   background: #e2e2e2 !important;
-   color: #5d5d5d !important;
-   border: 1px solid #57575729 !important;
-}
-.dark .password-input {
-   background: #292929 !important;
-   color: #8a8a8a !important;
-   border: 1px solid #ffffff29;
-}
-
-/* hover */
-.password-input:hover {
-   border-color: #33333391 !important;
-}
-.dark .password-input:hover {
-   border-color: #ffffff54 !important;
-}
-
-
-
-/* Show Password Button */
-.show-password-btn {
-   background: #a1a1a1 !important;
-   color: #ffffff !important;
-}
-.dark .show-password-btn {
-   background: #313131 !important;
-   color: #8a8a8a !important;
-}
-
-/* hover */
-.show-password-btn:hover {
-   filter: brightness(0.95);
-}
-.dark .show-password-btn:hover {
-   filter: brightness(1.2);
-}
-/* ------------------------- */
-
-
-
-
-/* Submit Button */
-.submit-btn {
-   background: #FF7556 !important;
-   color: #ffffff !important;
-}
-.dark .submit-btn {
-   background: #FF7556 !important;
-   color: #ffffff !important;
-}
-
-/* hover */
-.submit-btn:hover {
+.esp32web_submitBtn:hover {
    transform: scale(1.05) !important;
 }
-/* ------------------------- */
-
-
-
-
-/* Timer */
-.timer {
-   color: #676767 !important;
+.esp32web_submitBtn {
+   background-color: rgb(255, 117, 86) !important;
+   color: rgb(255, 255, 255) !important;
 }
-.dark .timer {
-   color: #8a8a8a !important;
+.dark-app .esp32web_submitBtn {
+   background-color: rgb(255, 117, 86) !important;
+   color: rgb(255, 255, 255) !important;
 }
-
-/* Timer text*/
-.timer-text {
-   color: #676767 !important;
+.esp32web_themeBtn {
+   background-color: rgb(226, 226, 226) !important;
+   color: rgb(73, 73, 73) !important;
 }
-.dark .timer-text {
-   color: #8a8a8a !important;
+.dark-app .esp32web_themeBtn {
+   background-color: rgb(41, 41, 41) !important;
+   color: rgb(161, 161, 161) !important;
 }
-/* ------------------------- */
-
-
-/* Theme Button */
-.theme-button {
-   background: #e2e2e2 !important;
-   color: #494949 !important;
+.esp32web_footer-text {
+   color: rgb(138, 138, 138) !important;
 }
-.dark .theme-button {
-   background: #292929 !important;
-   color: #a1a1a1 !important;
+.dark-app .esp32web_footer-text {
+   color: rgb(81, 81, 81) !important;
 }
-
-
-
-/* Footer Tag */
-.footer-tag {
-   color: #515151;
+.esp32web_logo-div {
+   flex-direction: row !important;
 }
-.dark .footer-tag {
-   color: #8a8a8a;
+.esp32web_main-title {
+   font-family: var(--font-brother) !important;
+   font-size: 49px !important;
+   text-align: left !important;
+   color: rgb(75, 75, 75) !important;
 }
-
-
-
-
-/* #endregion ----------------- */
-
-
-
-
-/* #region ==== About Page ==== */
-
-/* Text */
-.simple-text {
-   color: rgb(74, 74, 74);
+.dark-app .esp32web_main-title {
+   color: rgb(255, 255, 255) !important;
 }
-.dark .simple-text {
-   color: rgb(255, 255, 255);
+.esp32web_sub-title {
+   font-family: var(--font-arial-bold) !important;
+   font-size: 20px !important;
+   text-align: left !important;
+   color: rgb(75, 75, 75) !important;
 }
-
-/* #endregion ----------------- */
-
-
-
-/* 
------------------ Other Status Pages  -----------------
--------------------------------------------------------
-*/
-
-/* #region ==== Loading Page ==== */
-
-/* title */
+.dark-app .esp32web_sub-title {
+   color: rgb(182, 182, 182) !important;
+}
+.esp32web_logo-div {
+   gap: 16px !important;
+   align-items: center !important;
+}
+.esp32web_logo-image {
+   width: 100px !important;
+   border-radius: 0px !important;
+}
 .waking-up-text {
-   color: #494949;
+   color: rgb(75, 75, 75) !important;
 }
-.dark .waking-up-text {
-   color: #ffffff;
+.dark-app .waking-up-text {
+   color: rgb(255, 255, 255) !important;
 }
-
-/* loading spinner */
 .loading-spinner {
-   color: #000000 !important;
+   color: rgb(75, 75, 75) !important;
 }
-.dark .loading-spinner {
-   color: #ffffff !important;
+.dark-app .loading-spinner {
+   color: rgb(255, 255, 255) !important;
 }
-
-/* #endregion -------------------- */
-
-
-/* #region ==== WiFi Details Submited Page ==== */
-
-/* title */
+.timer {
+   font-size: 30px !important;
+   color: rgb(75, 75, 75) !important;
+   margin-top: 60px !important;
+}
+.dark-app .timer {
+   color: rgb(255, 255, 255) !important;
+}
+.timer-text {
+   font-size: 18px !important;
+   color: rgb(75, 75, 75) !important;
+   margin-top: 20px !important;
+}
+.dark-app .timer-text {
+   color: rgb(255, 255, 255) !important;
+}
 .wifi-details-submitted-title {
-   color: #494949;
+   color: rgb(75, 75, 75) !important;
 }
-.dark .wifi-details-submitted-title {
-   color: #ffffff;
+.dark-app .wifi-details-submitted-title {
+   color: rgb(255, 255, 255) !important;
 }
-
-
-/* info text */
 .wifi-details-submitted-text {
-   color: #8a8a8a;
+   color: rgb(75, 75, 75) !important;
 }
-.dark .wifi-details-submitted-text {
-   color: #8a8a8a;
+.dark-app .wifi-details-submitted-text {
+   color: rgb(255, 255, 255) !important;
 }
-
-/* #endregion ---------------------------------- */
-
-
-/* #region ==== WiFi Details Submited Page ==== */
-
-/* title */
 .sleep-title {
-   color: #494949;
+   color: rgb(75, 75, 75) !important;
 }
-.dark .sleep-title {
-   color: #ffffff;
+.dark-app .sleep-title {
+   color: rgb(255, 255, 255) !important;
 }
-
-
-/* info text */
 .sleep-text {
-   color: #8a8a8a;
+   color: rgb(75, 75, 75) !important;
 }
-.dark .sleep-text {
-   color: #8a8a8a;
+.dark-app .sleep-text {
+   color: rgb(255, 255, 255) !important;
 }
-
-
-/* #endregion ---------------------------------- */
-
-
-/* #region ==== Connection Lost Page ==== */
-
-/* title */
-.connection-lost-title {
-   color: #494949;
-}
-.dark .connection-lost-title {
-   color: #ffffff;
-}
-
-
-/* info text */
-.connection-lost-text {
-   color: #8a8a8a;
-}
-.dark .connection-lost-text {
-   color: #c0c0c0;
-}
-
-
-/* icon */
-.connection-lost-icon {
-   color: #494949 !important;
-}
-.dark .connection-lost-icon {
-   color: #ffffff !important;
-}
-
-
-/* #endregion ---------------------------------- */
-
-
-
-/* end of file ---------------------------------------------- */

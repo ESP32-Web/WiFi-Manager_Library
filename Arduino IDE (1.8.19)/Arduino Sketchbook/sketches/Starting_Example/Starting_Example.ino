@@ -12,10 +12,6 @@ void setup() {
    pinMode(LED_PIN, OUTPUT);
    digitalWrite(LED_PIN, LOW);
 
-   // Looping Functions: 
-   t0_AP_Mode.setInterval(1000, ledBlink); // timer for LED blink
-   t0_AP_Mode.setInterval(1000, stopAP); // timer for AP mode (WiFi Hostpot)
-
    // check config file -> run AP or STA mode -> start web server
    checkWiFiConfig();
 
@@ -31,5 +27,32 @@ void loop() {
    // ----- Write your looping code below -------- //
 
 
+   // The code below is an example of how to use the currentState variable & restart the AP Mode
+   // You may errase all of the below - it's just some guidance on conditional statements
 
+   // if connected to a WiFi network
+   if (currentState == STA_Mode) {
+      Serial.println("STA Mode");
+      // Your code here
+   }
+
+
+   // if not connected to a WiFi network & in AP mode
+   if (currentState == AP_Mode) {
+      Serial.println("AP Mode");
+      // Your code here
+   }
+
+
+   // if in idle mode (AP mode timed out)
+   if (currentState == Idle) {
+      Serial.println("Idle Mode");
+      // Your code here
+
+      // Restart the AP mode after 5 seconds or based on your requirement
+      delay(5000);
+      checkWiFiConfig();
+   }
+
+   delay(2000); // delay to prevent flooding the serial monitor 
 }

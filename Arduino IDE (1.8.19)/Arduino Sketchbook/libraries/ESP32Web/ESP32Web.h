@@ -19,6 +19,8 @@
 
 // <========================> Gloabal Varibales Declared <============================> //
 
+extern const int LED_PIN;
+
 extern const char* title_type;
 extern const char* main_title;
 extern const char* sub_title;
@@ -69,6 +71,7 @@ enum State {
 // Flags
 extern bool wifiScanActive;
 extern bool captiveWebPortal;
+extern bool blinkingStatus;
 
 extern State currentState;
 

@@ -15,10 +15,14 @@ const char* ap_password = "esp32web"; // Hotspot WiFi Password
 // How long WiFi Hotspot stays open for 
 // -- Hotspot is energy consuming & chip can get hot
 unsigned long apDuration = 200000; // 3 mins = 180000, 2 mins = 120000, 1 min = 60000
-bool captiveWebPortal = true; // Would you like to show a captive portal to the user? (true or false)
+bool captiveWebPortal = false; // Would you like to show a captive portal to the user? (true or false)
 
 // Local Website URL
 const char* local_URL = "esp32web"; //  accesible on "ESP32Web.local"
+
+// Other Configurations
+const int LED_PIN = 2; // LED Pin for Blinking
+bool blinkingStatus = true; // Let LED show connection status? [blinking = AP Mode / solid = STA Mode] (true or false)
 
 // ============================ Other Varaibles ============================ //
 
@@ -113,7 +117,7 @@ void changeState(State fromtState, State toState) {
       /// AP_Mode -> Idle
    case (AP_Mode << 2) | Idle:
       currentState = Idle;
-      digitalWrite(2, LOW);
+      if (blinkingStatus) digitalWrite(LED_PIN, LOW);
       break;
    }
 
@@ -509,7 +513,7 @@ void startWiFi() {
    Serial.println(WiFi.RSSI());
 
    // Blue LED on 
-   digitalWrite(2, HIGH);
+   if (blinkingStatus) digitalWrite(LED_PIN, HIGH);
 
    // -----------------
    currentState = STA_Mode;
@@ -696,6 +700,10 @@ void setupWiFi() {
 
 // Check file data to start wifi 
 void checkWiFiConfig() {
+   // Looping Functions: 
+   if (blinkingStatus) t0_AP_Mode.setInterval(1000, ledBlink); // timer for LED blink
+   t0_AP_Mode.setInterval(1000, stopAP); // timer for AP mode (WiFi Ho
+
    Serial.println("Check WiFi Config Running...");
 
    // Mount LittleFS
@@ -758,7 +766,7 @@ void checkWiFiConfig() {
 
 void ledBlink() {
 
-   digitalWrite(2, !digitalRead(2));
+   digitalWrite(LED_PIN, !digitalRead(LED_PIN));
 
 }
 
