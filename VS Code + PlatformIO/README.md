@@ -1,7 +1,7 @@
 ### ESP32 Web - VS Code + PlatformIO
 # WiFi Manager Library - v 1.0.0
 
-<img src="../github/Repository-Banner_VSCode+PlatformIO.png">
+<img src="../github/Repository-Banner_ArduinoIDE.png">
 
 ### Quickest way to get started with this library is via this short video tutorial:
 #### [Getting Started Tutorial](https://youtu.be/lcbPMxtgacM)
