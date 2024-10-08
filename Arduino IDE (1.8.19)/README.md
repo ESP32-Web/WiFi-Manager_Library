@@ -1,5 +1,5 @@
 ### ESP32 Web - Arduino IDE 1.8.19
-# WiFi Manager Library - v 0.1.2
+# WiFi Manager Library - v 1.0.0
 
 <img src="../github/Repository-Banner_ArduinoIDE.png">
 
