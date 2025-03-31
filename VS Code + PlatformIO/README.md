@@ -1,5 +1,5 @@
 ### ESP32 Web - VS Code + PlatformIO
-# WiFi Manager Library - v 1.0.0
+# WiFi Manager Library - v 1.1.0
 
 <img src="../github/Repository-Banner_VSCode+PlatformIO.png">
 

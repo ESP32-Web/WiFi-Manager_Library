@@ -23,6 +23,7 @@ const char* local_URL = "esp32web"; //  accesible on "ESP32Web.local"
 // Other Configurations
 const int LED_PIN = 2; // LED Pin for Blinking
 bool blinkingStatus = true; // Let LED show connection status? [blinking = AP Mode / solid = STA Mode] (true or false)
+bool onSubmit_Restart = false; // restart the ESP32 when wifi details submitted in AP Mode. Does not affect submission in STA Mode.
 
 // ============================ Other Varaibles ============================ //
 
@@ -63,7 +64,8 @@ SimpleTimer t1_stopAP;
 SimpleTimer t2;
 
 // Flags
-bool wifiScanActive = false;
+bool wifiScanActive = false; // if wifi scan is activated
+bool wifiReconfig = false; // if wifi reconfiguration is activated
 
 //State
 State currentState = Initiating;
@@ -76,6 +78,11 @@ void handleState() {
 
    if (wifiScanActive) {
       wifiScan();
+   }
+
+   if (wifiReconfig) {
+      wifiReconfig = false;
+      checkWiFiConfig();
    }
 
    if (currentState == Idle) {}
@@ -365,8 +372,20 @@ void handlePostRequest(AsyncWebServerRequest* request, uint8_t* data, size_t len
 
       // ----------
 
-      // Restart ESP
-      ESP.restart();
+      // if flag is set to true, restart the ESP32
+      if (onSubmit_Restart) {
+         // Restart ESP
+         ESP.restart();
+      }
+      // else, end the server and disconnect from AP mode
+      else {
+         // end webserver & AP Mode
+         server.end();
+         WiFi.disconnect(true);
+
+         // set the flag to true to reconfigure wifi
+         wifiReconfig = true;
+      }
 
    }
 
@@ -700,9 +719,13 @@ void setupWiFi() {
 
 // Check file data to start wifi 
 void checkWiFiConfig() {
+   // LED Pin Setup
+   pinMode(LED_PIN, OUTPUT);
+   digitalWrite(LED_PIN, LOW); // Turn off LED
+
    // Looping Functions: 
    if (blinkingStatus) t0_AP_Mode.setInterval(1000, ledBlink); // timer for LED blink
-   t0_AP_Mode.setInterval(1000, stopAP); // timer for AP mode (WiFi Ho
+   t0_AP_Mode.setInterval(1000, stopAP); // timer for AP mode (WiFi HoW
 
    Serial.println("Check WiFi Config Running...");
 

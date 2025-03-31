@@ -2,15 +2,10 @@
 // For documentation on ESP32Web.h, see: https://esp32web.com/docs
 
 
-// LED Pin
-#define LED_PIN 2
 
 void setup() {
    Serial.begin(115200);
    delay(4000); // not always needed. Some boards need a delay to allow Serial to be ready
-
-   pinMode(LED_PIN, OUTPUT);
-   digitalWrite(LED_PIN, LOW);
 
    // check config file -> run AP or STA mode -> start web server
    checkWiFiConfig();

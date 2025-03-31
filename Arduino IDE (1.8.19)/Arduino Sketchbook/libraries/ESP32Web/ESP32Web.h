@@ -70,8 +70,10 @@ enum State {
 
 // Flags
 extern bool wifiScanActive;
+extern bool wifiReconfig;
 extern bool captiveWebPortal;
 extern bool blinkingStatus;
+extern bool onSubmit_Restart;
 
 extern State currentState;
 
